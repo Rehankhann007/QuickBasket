@@ -21,15 +21,7 @@ connectDB();
 const app = express();
 const httpServer = http.createServer(app);
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://quickbasket-2zvt.onrender.com",
-    ],
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 // ---- Socket.io (for live delivery location tracking) ----
