@@ -3,24 +3,6 @@ const jwt = require("jsonwebtoken");
 const Order = require("../models/Order");
 const User = require("../models/User");
 
-/**
- * Rooms used:
- * - `user_<userId>`      -> that specific user listens here for their order updates
- * - `delivery_<userId>`  -> that specific delivery boy listens here for new assignments
- * - `admins`             -> all admins listen here for new orders / overview
- * - `order_<orderId>`    -> anyone actively viewing that order's tracking screen
- *                           (user, the assigned delivery boy, and admin all join this
- *                           to receive currentLocation updates live on the map)
- *
- * Events:
- * - client -> server: "join_order_room"      { orderId }
- * - client -> server: "leave_order_room"     { orderId }
- * - client -> server: "update_location"      { orderId, lat, lng }   (delivery boy only)
- * - server -> client: "location_update"      { orderId, lat, lng, updatedAt }
- * - server -> client: "order_status_updated" { orderId, status }
- * - server -> client: "new_order"            { orderId }             (to admins room)
- * - server -> client: "new_assignment"       { orderId }             (to delivery_<id> room)
- */
 
 const initSocket = (httpServer) => {
   const io = new Server(httpServer, {

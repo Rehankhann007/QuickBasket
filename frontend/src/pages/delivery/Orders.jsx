@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiMapPin, FiClock } from "react-icons/fi";
+import { connectSocket, getSocket } from "../../services/socket";
 
 import { getMyDeliveries } from "../../services/orderApi";
 import { SkeletonList } from "../../components/Skeletons";
@@ -20,18 +21,34 @@ const Orders = () => {
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
+
     const fetchOrders = async () => {
-      try {
-        const res = await getMyDeliveries();
-        setOrders(res.data.orders || []);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
+        try {
+            const res = await getMyDeliveries();
+            setOrders(res.data.orders || []);
+        } finally {
+            setLoading(false);
+        }
     };
+
     fetchOrders();
-  }, []);
+
+    connectSocket();
+
+    const socket = getSocket();
+
+    if (!socket) return;
+
+    socket.on("new_assignment", fetchOrders);
+
+    socket.on("order_status_updated", fetchOrders);
+
+    return () => {
+        socket.off("new_assignment");
+        socket.off("order_status_updated");
+    };
+
+}, []);
 
   const filtered = orders.filter((o) => filter === "All" || o.status === filter);
 

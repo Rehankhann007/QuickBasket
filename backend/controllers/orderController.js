@@ -260,6 +260,10 @@ const assignDeliveryBoy = async (req, res) => {
         orderId: order._id,
         status: order.status,
       });
+      io.to("admins").emit("order_status_updated", {
+    orderId: order._id,
+    status: order.status,
+});
     }
 
     res.status(200).json({

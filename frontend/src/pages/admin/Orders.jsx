@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiClock, FiTruck, FiX } from "react-icons/fi";
+import { connectSocket, getSocket } from "../../services/socket";
 
 import {
   getAllOrders,
@@ -101,9 +102,33 @@ const Orders = () => {
     }
   };
 
-  useEffect(() => {
+useEffect(() => {
+  fetchData();
+
+  connectSocket();
+
+  const socket = getSocket();
+
+  if (!socket) return;
+
+  socket.on("new_order", () => {
     fetchData();
-  }, []);
+  });
+
+  socket.on("order_status_updated", () => {
+    fetchData();
+  });
+
+  socket.on("new_assignment", () => {
+    fetchData();
+  });
+
+  return () => {
+    socket.off("new_order");
+    socket.off("order_status_updated");
+    socket.off("new_assignment");
+  };
+}, []);
 
   const handleConfirm = async (orderId) => {
     try {
