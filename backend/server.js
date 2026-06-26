@@ -23,15 +23,24 @@ const httpServer = http.createServer(app);
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://quick-basket-xi.vercel.app/",
-    ],
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "https://quick-basket-xi.vercel.app",
+      ];
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+app.options("*", cors());
 app.use(express.json());
-app.options(/.*/, cors());
 
 // ---- Socket.io (for live delivery location tracking) ----
 const io = initSocket(httpServer);
