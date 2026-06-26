@@ -21,7 +21,15 @@ connectDB();
 const app = express();
 const httpServer = http.createServer(app);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://quick-basket-xi.vercel.app/",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // ---- Socket.io (for live delivery location tracking) ----

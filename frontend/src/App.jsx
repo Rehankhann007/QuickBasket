@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import RoleProtectedRoute from "./components/RoleProtectedRoute";
-import FlyToCartLayer from "./components/FlyToCartLayer";
+
 
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
@@ -38,7 +38,7 @@ import DeliveryProfile from "./pages/delivery/Profile";
 function App() {
   return (
     <>
-      <FlyToCartLayer />
+      
       <Routes>
       {/* ---------- Public / Auth ---------- */}
       <Route path="/login" element={<Login />} />
