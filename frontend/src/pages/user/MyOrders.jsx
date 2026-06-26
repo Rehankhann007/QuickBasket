@@ -5,7 +5,6 @@ import { FiPackage, FiMapPin, FiClock } from "react-icons/fi";
 
 import { getMyOrders } from "../../services/orderApi";
 import { SkeletonList } from "../../components/Skeletons";
-import { connectSocket, getSocket } from "../../services/socket";
 
 const statusStyles = {
   Pending: "bg-yellow-100 text-yellow-700",
@@ -21,27 +20,18 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
     const fetchOrders = async () => {
+      try {
         const res = await getMyOrders();
         setOrders(res.data.orders || []);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     };
-
     fetchOrders();
-
-    connectSocket();
-
-    const socket = getSocket();
-
-    if (!socket) return;
-
-    socket.on("order_status_updated", fetchOrders);
-
-    return () => {
-        socket.off("order_status_updated");
-    };
-
-}, []);
+  }, []);
 
   if (loading) {
     return (
