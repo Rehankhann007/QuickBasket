@@ -31,6 +31,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.options(/.*/, cors());
 
 // ---- Socket.io (for live delivery location tracking) ----
 const io = initSocket(httpServer);
