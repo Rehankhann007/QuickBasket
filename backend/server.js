@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://YOUR_FRONTEND_URL.vercel.app",
+      "https://quickbasket-2zvt.onrender.com",
     ],
     credentials: true,
   })
