@@ -39,7 +39,7 @@ app.use(
   })
 );
 
-app.options("*", cors());
+
 app.use(express.json());
 
 // ---- Socket.io (for live delivery location tracking) ----
