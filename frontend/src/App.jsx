@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 import RoleProtectedRoute from "./components/RoleProtectedRoute";
 
-
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import DeliveryLayout from "./layouts/DeliveryLayout";
@@ -37,9 +36,7 @@ import DeliveryProfile from "./pages/delivery/Profile";
 
 function App() {
   return (
-    <>
-      
-      <Routes>
+    <Routes>
       {/* ---------- Public / Auth ---------- */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -98,8 +95,7 @@ function App() {
       {/* ---------- Fallback: landing page redirects to login ---------- */}
       <Route path="/" element={<Login />} />
       <Route path="*" element={<Login />} />
-      </Routes>
-    </>
+    </Routes>
   );
 }
 

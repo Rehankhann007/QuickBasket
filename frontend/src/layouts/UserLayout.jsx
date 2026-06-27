@@ -2,7 +2,6 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiHome, FiShoppingBag, FiShoppingCart, FiPackage, FiUser } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
-import { useCartFly } from "../context/CartFlyContext";
 
 const navItems = [
   { to: "/user", icon: FiHome, label: "Home" },
@@ -16,7 +15,6 @@ const UserLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logoutUser } = useAuth();
-  const { cartIconRefMobile, cartIconRefDesktop } = useCartFly();
 
   const handleLogout = () => {
     logoutUser();
@@ -60,7 +58,6 @@ const UserLayout = () => {
               <Link
                 key={item.to}
                 to={item.to}
-                ref={item.to === "/user/cart" ? cartIconRefMobile : null}
                 className="relative flex-1 flex flex-col items-center py-2.5"
               >
                 {active && (
@@ -95,7 +92,6 @@ const UserLayout = () => {
             <Link
               key={item.to}
               to={item.to}
-              ref={item.to === "/user/cart" ? cartIconRefDesktop : null}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${
                 active
                   ? "bg-orange-500 text-white"

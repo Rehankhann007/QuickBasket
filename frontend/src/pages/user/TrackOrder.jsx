@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiPhone, FiPackage } from "react-icons/fi";
 import "leaflet/dist/leaflet.css";
@@ -9,19 +8,7 @@ import "leaflet/dist/leaflet.css";
 import { getSingleOrder } from "../../services/orderApi";
 import { getSocket } from "../../services/socket";
 import LoadingSpinner from "../../components/LoadingSpinner";
-
-// Custom icons so user and delivery boy markers look different
-const deliveryIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/3097/3097144.png",
-  iconSize: [36, 36],
-  iconAnchor: [18, 18],
-});
-
-const homeIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-});
+import { scooterIcon, homePinIcon } from "../../utils/mapIcons";
 
 const TrackOrder = () => {
   const { id } = useParams();
@@ -104,13 +91,13 @@ const TrackOrder = () => {
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
           {destination && (
-            <Marker position={destination} icon={homeIcon}>
+            <Marker position={destination} icon={homePinIcon}>
               <Popup>Delivery Address</Popup>
             </Marker>
           )}
 
           {liveLocation && (
-            <Marker position={liveLocation} icon={deliveryIcon}>
+            <Marker position={liveLocation} icon={scooterIcon}>
               <Popup>Delivery Partner</Popup>
             </Marker>
           )}

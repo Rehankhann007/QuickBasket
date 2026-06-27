@@ -1,13 +1,10 @@
 import { motion } from "framer-motion";
 import { FiPlus, FiShoppingCart } from "react-icons/fi";
-import { useCartFly } from "../context/CartFlyContext";
 
 const ProductCard = ({ product, onAddToCart, adding }) => {
   const outOfStock = product.stock <= 0;
-  const { flyToCart } = useCartFly();
 
-  const handleAddClick = (e) => {
-    flyToCart(e.currentTarget, product.image);
+  const handleAddClick = () => {
     onAddToCart(product);
   };
 
@@ -49,7 +46,7 @@ const ProductCard = ({ product, onAddToCart, adding }) => {
             whileTap={{ scale: 0.9 }}
             disabled={outOfStock || adding}
             onClick={handleAddClick}
-            className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium transition ${
+            className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium transition cursor-pointer ${
               outOfStock
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                 : "bg-orange-500 text-white hover:bg-orange-600"

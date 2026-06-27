@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiNavigation, FiCheckCircle } from "react-icons/fi";
 import "leaflet/dist/leaflet.css";
@@ -9,18 +8,7 @@ import "leaflet/dist/leaflet.css";
 import { getSingleOrder, verifyDeliveryOtp } from "../../services/orderApi";
 import { getSocket } from "../../services/socket";
 import LoadingSpinner from "../../components/LoadingSpinner";
-
-const deliveryIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/3097/3097144.png",
-  iconSize: [36, 36],
-  iconAnchor: [18, 18],
-});
-
-const homeIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-});
+import { scooterIcon, homePinIcon } from "../../utils/mapIcons";
 
 const MapTracking = () => {
   const { id } = useParams();
@@ -141,12 +129,12 @@ const MapTracking = () => {
         <MapContainer center={mapCenter} zoom={14} style={{ height: "100%", width: "100%" }}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {destination && (
-            <Marker position={destination} icon={homeIcon}>
+            <Marker position={destination} icon={homePinIcon}>
               <Popup>{order.deliveryAddress?.address || "Delivery Address"}</Popup>
             </Marker>
           )}
           {myLocation && (
-            <Marker position={myLocation} icon={deliveryIcon}>
+            <Marker position={myLocation} icon={scooterIcon}>
               <Popup>You</Popup>
             </Marker>
           )}

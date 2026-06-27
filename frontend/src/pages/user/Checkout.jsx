@@ -9,6 +9,7 @@ import { getCart } from "../../services/cartApi";
 import { placeOrder } from "../../services/orderApi";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import OrderSuccessOverlay from "../../components/OrderSuccessOverlay";
+import { homePinIcon } from "../../utils/mapIcons";
 
 const DEFAULT_CENTER = [22.7196, 75.8577]; // Indore, fallback
 
@@ -18,7 +19,7 @@ const LocationPicker = ({ position, setPosition }) => {
       setPosition([e.latlng.lat, e.latlng.lng]);
     },
   });
-  return position ? <Marker position={position} /> : null;
+  return position ? <Marker position={position} icon={homePinIcon} /> : null;
 };
 
 const Checkout = () => {

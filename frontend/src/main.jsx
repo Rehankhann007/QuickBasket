@@ -5,7 +5,6 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
-import { CartFlyProvider } from "./context/CartFlyContext";
 import "./index.css";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -14,9 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
     <BrowserRouter>
       <AuthProvider>
-        <CartFlyProvider>
-          <App />
-        </CartFlyProvider>
+        <App />
       </AuthProvider>
     </BrowserRouter>
   </GoogleOAuthProvider>
