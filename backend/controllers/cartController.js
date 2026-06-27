@@ -1,6 +1,12 @@
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 
+// Helper
+const getPopulatedCart = async (userId) => {
+  return await Cart.findOne({ user: userId }).populate("items.product");
+};
+
+// ---------------- ADD TO CART ----------------
 const addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -30,8 +36,7 @@ const addToCart = async (req, res) => {
       });
     } else {
       const itemIndex = cart.items.findIndex(
-        (item) =>
-          item.product.toString() === productId
+        (item) => item.product.toString() === productId
       );
 
       if (itemIndex > -1) {
@@ -46,12 +51,13 @@ const addToCart = async (req, res) => {
       await cart.save();
     }
 
+    const updatedCart = await getPopulatedCart(req.user.id);
+
     res.status(200).json({
       success: true,
       message: "Product added to cart",
-      cart,
+      cart: updatedCart,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -60,16 +66,17 @@ const addToCart = async (req, res) => {
   }
 };
 
+// ---------------- GET CART ----------------
 const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({
-      user: req.user.id,
-    }).populate("items.product");
+    const cart = await getPopulatedCart(req.user.id);
 
     if (!cart) {
       return res.status(200).json({
         success: true,
-        items: [],
+        cart: {
+          items: [],
+        },
       });
     }
 
@@ -77,7 +84,6 @@ const getCart = async (req, res) => {
       success: true,
       cart,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -86,6 +92,7 @@ const getCart = async (req, res) => {
   }
 };
 
+// ---------------- CLEAR CART ----------------
 const clearCart = async (req, res) => {
   try {
     await Cart.findOneAndUpdate(
@@ -105,6 +112,7 @@ const clearCart = async (req, res) => {
   }
 };
 
+// ---------------- UPDATE CART ----------------
 const updateCartItem = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -135,12 +143,13 @@ const updateCartItem = async (req, res) => {
 
     await cart.save();
 
+    const updatedCart = await getPopulatedCart(req.user.id);
+
     res.status(200).json({
       success: true,
       message: "Cart updated successfully",
-      cart,
+      cart: updatedCart,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -149,6 +158,7 @@ const updateCartItem = async (req, res) => {
   }
 };
 
+// ---------------- REMOVE ITEM ----------------
 const removeCartItem = async (req, res) => {
   try {
     const { productId } = req.body;
@@ -170,12 +180,13 @@ const removeCartItem = async (req, res) => {
 
     await cart.save();
 
+    const updatedCart = await getPopulatedCart(req.user.id);
+
     res.status(200).json({
       success: true,
       message: "Item removed successfully",
-      cart,
+      cart: updatedCart,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
