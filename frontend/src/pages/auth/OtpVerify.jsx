@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { verifyOtp as verifyOtpApi, resendOtp } from "../../services/authApi";
+import { useAuth } from "../../context/AuthContext";
+import { getRoleHome } from "../../utils/roleRedirect";
 
 const OtpVerify = () => {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
+  const { loginUser } = useAuth();
 
   const userId = localStorage.getItem("userId");
 
@@ -34,10 +36,9 @@ const OtpVerify = () => {
         localStorage.removeItem("userId");
         localStorage.removeItem("email");
 
-        setSuccess("Account verified! Redirecting to login...");
-        setTimeout(() => {
-          navigate("/login", { replace: true });
-        }, 1200);
+        // Backend returns token + user right after verification - auto login
+        loginUser(res.data.token, res.data.user);
+        navigate(getRoleHome(res.data.user.role), { replace: true });
       }
     } catch (err) {
       setError(err.response?.data?.message || "Verification failed");
@@ -60,7 +61,7 @@ const OtpVerify = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-orange-100 to-orange-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,10 +79,6 @@ const OtpVerify = () => {
           <p className="text-red-500 text-sm text-center mb-4">{error}</p>
         )}
 
-        {success && (
-          <p className="text-green-600 text-sm text-center mb-4">{success}</p>
-        )}
-
         <form onSubmit={verifyOtpHandler}>
           <input
             type="text"
@@ -96,7 +93,7 @@ const OtpVerify = () => {
           <motion.button
             whileTap={{ scale: 0.97 }}
             type="submit"
-            disabled={loading || !!success}
+            disabled={loading}
             className="w-full mt-5 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-semibold transition disabled:opacity-60"
           >
             {loading ? "Verifying..." : "Verify OTP"}

@@ -6,12 +6,7 @@ import { FiEye, FiEyeOff, FiUser, FiTruck } from "react-icons/fi";
 import { signup } from "../../services/authApi";
 import { useAuth } from "../../context/AuthContext";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
-
-const roleHomeMap = {
-  admin: "/admin",
-  deliveryBoy: "/delivery",
-  user: "/user",
-};
+import { getRoleHome } from "../../utils/roleRedirect";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -55,7 +50,7 @@ const Register = () => {
 
   const handleGoogleSuccess = (token, user) => {
     loginUser(token, user);
-    navigate(roleHomeMap[user.role] || "/user");
+    navigate(getRoleHome(user.role), { replace: true });
   };
 
   return (

@@ -6,12 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { login as loginApi } from "../../services/authApi";
 import { useAuth } from "../../context/AuthContext";
 import GoogleLoginButton from "../../components/GoogleLoginButton";
-
-const roleHomeMap = {
-  admin: "/admin",
-  deliveryBoy: "/delivery",
-  user: "/user",
-};
+import { getRoleHome } from "../../utils/roleRedirect";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +22,7 @@ const Login = () => {
   };
 
   const goToRoleHome = (role) => {
-    navigate(roleHomeMap[role] || "/user");
+    navigate(getRoleHome(role), { replace: true });
   };
 
   const handleLogin = async (e) => {
