@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* Hide scrollbar for horizontal category/filter chips, but keep them scrollable */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Leaflet map z-index fix so it doesn't overlap fixed nav bars */
+.leaflet-container {
+  z-index: 0;
+}
+.leaflet-top, .leaflet-bottom {
+  z-index: 10;
+}
+
