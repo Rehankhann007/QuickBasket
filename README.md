@@ -72,7 +72,6 @@ Backend
 - MongoDB
 - Mongoose
 - JWT
-- Nodemailer
 - Socket.io
 
 Deployment
